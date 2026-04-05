@@ -1,7 +1,8 @@
 export interface User {
     uid: string;
-    email: string | null;
-    displayName: string | null;
+    email: string;
+    role: "student" | "teacher";
+    name: string;
 }
 
 export interface Question {

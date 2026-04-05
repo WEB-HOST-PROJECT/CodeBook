@@ -47,14 +47,8 @@ const Login = () => {
             const docSnap = await getDoc(docRef);
 
             if (!docSnap.exists()) {
-                const finalName = name.trim() || user.displayName || "Unknown Student";
-                
-                await setDoc(docRef, {
-                    email: user.email,
-                    role: role, 
-                    name: finalName
-                });
-                navigate("/students");
+                // Abandon generating the firestore document blindly. Route to manual collection.
+                navigate("/complete-profile");
             } else {
                 const userRole = docSnap.data().role;
                 navigate(userRole === "student" ? "/students" : "/teacher");

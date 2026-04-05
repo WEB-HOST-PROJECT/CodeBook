@@ -3,7 +3,8 @@ import Teacher from './pages/Teacher'
 import Students from './pages/Students'
 import Header from './components/Header'
 import Login from './pages/Login'
-import TeacherAuth from './pages/TeacherAuth'
+import TeacherAuth from './pages/TeacherAuth';
+import CompleteProfile from './pages/CompleteProfile'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -15,6 +16,7 @@ const App = () => {
         <main className="flex-1 flex flex-col relative w-full pt-6 px-4 pb-12 sm:px-6 lg:px-8">
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="/teacher-portal-access" element={<TeacherAuth />} />
             <Route path="/students" element={
               <ProtectedRoute allowedRoles={['student']}>

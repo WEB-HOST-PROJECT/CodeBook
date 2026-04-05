@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, type User } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 interface AuthContextType {
@@ -19,35 +19,47 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    let unsubscribeSnapshot: (() => void) | undefined;
+
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      
       if (currentUser) {
-        // Fetch role and name from firestore
-        try {
-          const docRef = doc(db, "users", currentUser.uid);
-          const docSnap = await getDoc(docRef);
+        const docRef = doc(db, "users", currentUser.uid);
+        
+        // Listen actively for document changes (catches new registrations instantly)
+        unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
           if (docSnap.exists()) {
             const data = docSnap.data();
             setRole(data.role as "student" | "teacher");
-            setName(data.name || currentUser.displayName || null);
+            // Do NOT use currentUser.displayName. Use strict Firestore data.
+            setName(data.name || null);
           } else {
-            console.warn("User document not found in Firestore!");
+            console.warn("User document not found in Firestore! Awaiting Profile Completion.");
             setRole(null);
-            setName(currentUser.displayName || null);
+            setName(null);
           }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+          setLoading(false);
+        }, (error) => {
+          console.error("Error subscribing to user data:", error);
           setRole(null);
           setName(null);
-        }
+          setLoading(false);
+        });
+
       } else {
+        // User logged out
         setRole(null);
         setName(null);
+        setLoading(false);
+        if (unsubscribeSnapshot) unsubscribeSnapshot();
       }
-      setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeSnapshot) unsubscribeSnapshot();
+    };
   }, []);
 
   return (
