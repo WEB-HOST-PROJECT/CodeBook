@@ -121,7 +121,7 @@ const Login = () => {
             <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden sm:mx-0 mx-4">
 
                 <div className="bg-indigo-600 px-6 py-8 text-center sm:px-10">
-                    <h2 className="text-2xl font-bold text-white mb-2">
+                    <h2 className="text-3xl font-bold text-white mb-2">
                         {isLoginView ? "Student Portal" : "Join as a Student"}
                     </h2>
                     <p className="text-indigo-100 text-sm">
