@@ -65,11 +65,11 @@ const Login = () => {
         setError(null);
         setInfoMsg(null);
         setLoading(true);
-        
+
         try {
             if (isLoginView) {
                 const userCred = await signInWithEmailAndPassword(auth, email, password);
-                
+
                 if (!userCred.user.emailVerified) {
                     setError("Please verify your email address to log in.");
                     setLoading(false);
@@ -99,7 +99,7 @@ const Login = () => {
                     role,
                     name: name.trim()
                 });
-                
+
                 setInfoMsg("Registration successful! Please check your email to verify your account before logging in.");
                 setIsLoginView(true);
             }
@@ -109,7 +109,7 @@ const Login = () => {
             else if (err.code === "auth/email-already-in-use") userFriendlyError = "This email is already registered.";
             else if (err.code === "auth/weak-password") userFriendlyError = "Password should be at least 6 characters.";
             else userFriendlyError = err.message || userFriendlyError;
-            
+
             setError(userFriendlyError);
         } finally {
             setLoading(false);
@@ -117,21 +117,21 @@ const Login = () => {
     };
 
     return (
-        <div className="flex-1 flex items-center justify-center -mt-10 lg:-mt-20">
+        <div className="flex-1 flex items-center justify-center mt-10 lg:mt-10">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden sm:mx-0 mx-4">
-                
+
                 <div className="bg-indigo-600 px-6 py-8 text-center sm:px-10">
                     <h2 className="text-2xl font-bold text-white mb-2">
                         {isLoginView ? "Student Portal" : "Join as a Student"}
                     </h2>
                     <p className="text-indigo-100 text-sm">
-                        {isLoginView ? "Sign in to access your modules" : "Join our educational platform today"}
+                        {isLoginView ? "Sign in to access your Test Questions" : "Join our educational platform today"}
                     </p>
                 </div>
 
                 <div className="px-6 py-8 sm:px-10">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        
+
                         {error && (
                             <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
                                 <p className="text-sm text-red-700 font-medium">{error}</p>
