@@ -8,12 +8,12 @@ import Workspace from "../components/Student/Workspace";
 
 const Students = () => {
     const { user, name } = useAuth();
-    
+
     // Core State
     const [questions, setQuestions] = useState<Question[]>([]);
     const [attemptedIds, setAttemptedIds] = useState<Set<string>>(new Set());
     const [isLoadingData, setIsLoadingData] = useState(true);
-    
+
     // View State
     const [activeQuestion, setActiveQuestion] = useState<Question | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,7 +76,7 @@ const Students = () => {
                 newSet.add(activeQuestion.id);
                 return newSet;
             });
-            
+
             // Pop back to table and show a toast
             setActiveQuestion(null);
             setSuccessToast(`Successfully submitted "${activeQuestion.title}"!`);
@@ -92,7 +92,7 @@ const Students = () => {
 
     return (
         <div className="w-full max-w-7xl mx-auto flex-1 flex flex-col pt-4">
-            
+
             {/* Header: Fixed on both views */}
             <header className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 pb-4">
                 <div>
@@ -100,15 +100,15 @@ const Students = () => {
                         {activeQuestion ? "Coding Environment" : "Student Dashboard"}
                     </h1>
                     <p className="mt-1 text-gray-600">
-                        {activeQuestion 
-                            ? "Complete your assessment below." 
-                            : `Welcome back, ${name || 'Student'}! Here are your pending modules.`}
+                        {activeQuestion
+                            ? "Complete your assessment below."
+                            : `Welcome back, ${name || 'Student'} ! Here are your pending modules.`}
                     </p>
                 </div>
                 {/* Visual identity badge */}
                 <div className="hidden sm:flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full border border-blue-100">
                     <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></div>
-                    <span className="text-sm font-medium text-blue-800">Authenticated Student</span>
+                    <span className="text-sm font-medium text-blue-800">{name}</span>
                 </div>
             </header>
 
@@ -123,7 +123,7 @@ const Students = () => {
             {/* Loading Skeleton */}
             {isLoadingData ? (
                 <div className="flex-1 flex flex-col items-center justify-center min-h-[400px]">
-                     <svg className="animate-spin h-10 w-10 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-10 w-10 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -132,14 +132,14 @@ const Students = () => {
             ) : (
                 /* Router: Table vs Workspace */
                 activeQuestion ? (
-                    <Workspace 
+                    <Workspace
                         question={activeQuestion}
                         isSubmitting={isSubmitting}
                         onBack={() => setActiveQuestion(null)}
                         onSubmit={handleSubmitAssignment}
                     />
                 ) : (
-                    <QuestionTable 
+                    <QuestionTable
                         questions={availableQuestions}
                         onStartTest={setActiveQuestion}
                     />
