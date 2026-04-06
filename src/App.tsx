@@ -2,6 +2,7 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 import Teacher from './pages/Teacher'
 import Students from './pages/Students'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Login from './pages/Login'
 import TeacherAuth from './pages/TeacherAuth';
 import CompleteProfile from './pages/CompleteProfile'
@@ -31,6 +32,7 @@ const App = () => {
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </AuthProvider>
   )
