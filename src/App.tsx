@@ -1,6 +1,6 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
 import Teacher from './pages/Teacher'
-import Students from './pages/Students'
+import StudentDashboard from './pages/StudentDashboard'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Login from './pages/Login'
@@ -23,7 +23,7 @@ const App = () => {
             <Route path="/auth/user" element={<AuthUser />} />
             <Route path="/students" element={
               <ProtectedRoute allowedRoles={['student']}>
-                <Students />
+                <StudentDashboard />
               </ProtectedRoute>
             } />
             <Route path="/teacher" element={
