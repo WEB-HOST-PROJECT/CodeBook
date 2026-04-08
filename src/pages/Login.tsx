@@ -92,7 +92,9 @@ const Login = () => {
                 }
 
                 const userCred = await createUserWithEmailAndPassword(auth, email, password);
-                await sendEmailVerification(userCred.user);
+                await sendEmailVerification(userCred.user, {
+                    url: "https://codebook.vercel.app/auth/user"
+                });
 
                 await setDoc(doc(db, "users", userCred.user.uid), {
                     email,

@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import Login from './pages/Login'
 import TeacherAuth from './pages/TeacherAuth';
 import CompleteProfile from './pages/CompleteProfile'
+import AuthUser from './pages/AuthUser'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/complete-profile" element={<CompleteProfile />} />
             <Route path="/teacher-portal-access" element={<TeacherAuth />} />
+            <Route path="/auth/user" element={<AuthUser />} />
             <Route path="/students" element={
               <ProtectedRoute allowedRoles={['student']}>
                 <Students />
