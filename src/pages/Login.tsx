@@ -80,7 +80,7 @@ const Login = () => {
             if (err.code === "auth/invalid-email") userFriendlyError = "Please enter a valid email address.";
             else if (err.code === "auth/user-not-found") userFriendlyError = "No account found with this email.";
             else userFriendlyError = err.message || userFriendlyError;
-            
+
             setError(userFriendlyError);
         } finally {
             setLoading(false);
@@ -209,8 +209,8 @@ const Login = () => {
                             <div className="flex justify-between items-center">
                                 <label className="block text-sm font-medium text-gray-700" htmlFor="password">Password</label>
                                 {isLoginView && (
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={handleResetPassword}
                                         disabled={loading}
                                         className="text-sm font-medium text-indigo-600 hover:text-indigo-500 bg-transparent border-none p-0 cursor-pointer disabled:opacity-50"
