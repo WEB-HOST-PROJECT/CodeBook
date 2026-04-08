@@ -4,7 +4,8 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     sendEmailVerification,
-    signInWithPopup
+    signInWithPopup,
+    sendPasswordResetEmail
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -56,6 +57,31 @@ const Login = () => {
             }
         } catch (err: any) {
             setError(err.message || "Failed to sign in with Google.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleResetPassword = async () => {
+        if (!email.trim()) {
+            setError("Please enter your email address first to reset your password.");
+            return;
+        }
+
+        setError(null);
+        setInfoMsg(null);
+        setLoading(true);
+
+        try {
+            await sendPasswordResetEmail(auth, email);
+            setInfoMsg("A password reset link has been sent to your email address.");
+        } catch (err: any) {
+            let userFriendlyError = "Failed to send password reset email.";
+            if (err.code === "auth/invalid-email") userFriendlyError = "Please enter a valid email address.";
+            else if (err.code === "auth/user-not-found") userFriendlyError = "No account found with this email.";
+            else userFriendlyError = err.message || userFriendlyError;
+            
+            setError(userFriendlyError);
         } finally {
             setLoading(false);
         }
@@ -180,7 +206,19 @@ const Login = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700" htmlFor="password">Password</label>
+                            <div className="flex justify-between items-center">
+                                <label className="block text-sm font-medium text-gray-700" htmlFor="password">Password</label>
+                                {isLoginView && (
+                                    <button 
+                                        type="button" 
+                                        onClick={handleResetPassword}
+                                        disabled={loading}
+                                        className="text-sm font-medium text-indigo-600 hover:text-indigo-500 bg-transparent border-none p-0 cursor-pointer disabled:opacity-50"
+                                    >
+                                        Forgot password?
+                                    </button>
+                                )}
+                            </div>
                             <div className="mt-1 relative">
                                 <input
                                     id="password"
